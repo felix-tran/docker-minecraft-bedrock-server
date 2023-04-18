@@ -4,6 +4,7 @@ set -eo pipefail
 
 : "${TMP_DIR:=/tmp}"
 : "${PREVIEW:=false}"
+: "${COBBLEMON:=false}"
 
 function isTrue() {
   case "${1,,}" in
@@ -186,6 +187,9 @@ export LD_LIBRARY_PATH=.
 
 echo "Starting Bedrock server..."
 if [ -f /usr/local/bin/box64 ] ; then
+    if isTrue "${COBBLEMON}"; then
+      exec box64 ./java -Xmx2G -jar fabric-server-mc.1.19.2-loader.0.14.18-launcher.0.11.2.jar nogui
+    fi
     exec box64 ./bedrock_server-${VERSION}
 else
     exec ./bedrock_server-${VERSION}

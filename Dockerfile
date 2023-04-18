@@ -9,10 +9,12 @@ RUN apt-get update && \
     curl \
     unzip \
     jq \
+    openjdk-17-jdk \
+    openjdk-17-jre \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Instal box64 on arm
+# Install box64 on arm
 RUN if [ "$TARGETARCH" = "arm64" ] ; then \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y debian-keyring && \
@@ -29,6 +31,11 @@ EXPOSE 19132/udp
 VOLUME ["/data"]
 
 WORKDIR /data
+
+# Download Cobblemon deps
+RUN curl -OJ https://meta.fabricmc.net/v2/versions/loader/1.19.2/0.14.19/0.11.2/server/jar &&\
+  curl -L https://cdn.modrinth.com/data/P7dR8mSH/versions/hfsU4hXq/fabric-api-0.76.0%2B1.19.2.jar -o /data/mods/fabric-api.jar &&\
+  curl -L https://cdn.modrinth.com/data/lhGA9TYQ/versions/6hcOpiuA/architectury-6.5.77-fabric.jar -o /data/mods/architectury.jar
 
 ENTRYPOINT ["/usr/local/bin/entrypoint-demoter", "--match", "/data", "--debug", "--stdin-on-term", "stop", "/opt/bedrock-entry.sh"]
 
