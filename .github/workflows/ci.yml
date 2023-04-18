@@ -16,7 +16,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.repository == 'itzg/docker-minecraft-bedrock-server'
+    if: github.repository == 'felix-tran/docker-minecraft-bedrock-server'
 
     steps:
       - name: Set up QEMU
@@ -36,7 +36,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: itzg/minecraft-bedrock-server
+          images: felix-tran/minecraft-bedrock-server
           flavor: |
             latest=${{ github.event_name == 'push' && github.ref_name == 'master' }}
 
